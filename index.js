@@ -24,16 +24,14 @@ function addRow(user) {
   tableBody.appendChild(row);
 }
 
-function isValidAge(dob) {
+function calculateAge(dob) {
   const birthDate = new Date(dob);
   const today = new Date();
   let age = today.getFullYear() - birthDate.getFullYear();
   const m = today.getMonth() - birthDate.getMonth();
-
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-
   return age;
 }
 
@@ -46,10 +44,10 @@ form.addEventListener("submit", function (e) {
   const dob = document.getElementById("dob").value;
   const acceptedTerms = document.getElementById("acceptTerms").checked;
 
-  const age = isValidAge(dob);
+  const age = calculateAge(dob);
   if (age < minAge || age > maxAge) {
     alert("Age must be between 18 and 55.");
-    return;
+    return; // 🚫 block form submission
   }
 
   const user = { name, email, password, dob, acceptedTerms };
@@ -64,8 +62,8 @@ window.onload = () => {
   const dobInput = document.getElementById("dob");
   const today = new Date();
 
-  const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-  const minDob = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+  const maxDob = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
+  const minDob = new Date(today.getFullYear() - maxAge, today.getMonth(), today.getDate());
 
   function formatDate(date) {
     return date.toISOString().split("T")[0];
