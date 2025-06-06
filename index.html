@@ -2,112 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Registration Form</title>
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f2f2f2;
-      margin: 0;
-      padding: 0;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 40px auto;
-      padding: 30px;
-      background: #fff;
-      border-radius: 12px;
-    }
-
-    h2 {
-      text-align: center;
-      color: #333;
-    }
-
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    label {
-      font-weight: bold;
-      color: #333;
-    }
-
-    input[type="text"],
-    input[type="email"],
-    input[type="password"],
-    input[type="date"] {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 16px;
-    }
-
-    input[type="checkbox"] {
-      transform: scale(1.2);
-    }
-
-    button[type="submit"] {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: background-color 0.3s ease;
-    }
-
-    button[type="submit"]:hover {
-      background-color: #45a049;
-    }
-
-    table {
-      width: 100%;
-      margin-top: 30px;
-      border-collapse: collapse;
-    }
-
-    th, td {
-      padding: 12px 15px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-
-    thead {
-      
-      color: rgb(18, 17, 17);
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-
-    tbody tr:hover {
-      background-color: #f1f1f1;
-    }
-
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-
-      table, thead, tbody, th, td, tr {
-        font-size: 14px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h2>Registration Form</h2>
+    <h1>Registration Form</h1>
     <form id="registration-form">
       <label for="name">Name:</label>
       <input type="text" id="name" required />
@@ -130,7 +31,7 @@
     </form>
 
     <h2>Registered Users</h2>
-    <table id="userTable">
+    <table>
       <thead>
         <tr>
           <th>Name</th>
@@ -140,73 +41,10 @@
           <th>Accepted terms?</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Data goes here -->
-      </tbody>
+      <tbody id="entries"></tbody>
     </table>
   </div>
 
-  <script>
-    const form = document.getElementById("registration-form");
-    const userTable = document.getElementById("userTable").getElementsByTagName("tbody")[0];
-    const minAge = 18;
-    const maxAge = 55;
-
-    function getUsers() {
-      return JSON.parse(localStorage.getItem("users")) || [];
-    }
-
-    function setUsers(users) {
-      localStorage.setItem("users", JSON.stringify(users));
-    }
-
-    function isValidAge(dob) {
-      const birthDate = new Date(dob);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const m = today.getMonth() - birthDate.getMonth();
-      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-      }
-      return age;
-    }
-
-    function addRow(user) {
-      const row = userTable.insertRow();
-      row.insertCell(0).textContent = user.name;
-      row.insertCell(1).textContent = user.email;
-      row.insertCell(2).textContent = user.password;
-      row.insertCell(3).textContent = user.dob;
-      row.insertCell(4).textContent = user.terms;
-    }
-
-    window.onload = () => {
-      const users = getUsers();
-      users.forEach(user => addRow(user));
-    };
-
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value;
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const dob = document.getElementById("dob").value;
-      const terms = document.getElementById("acceptTerms").checked;
-
-      const age = isValidAge(dob);
-      if (age < minAge || age > maxAge) {
-        alert("Age must be between 18 and 55.");
-        return;
-      }
-
-      const user = { name, email, password, dob, terms };
-      const users = getUsers();
-      users.push(user);
-      setUsers(users);
-      addRow(user);
-      form.reset();
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
