@@ -1,7 +1,5 @@
 const form = document.getElementById("registration-form");
 const tableBody = document.getElementById("entries");
-const minAge = 18;
-const maxAge = 55;
 
 function getUsers() {
   return JSON.parse(localStorage.getItem("users")) || [];
@@ -13,7 +11,6 @@ function setUsers(users) {
 
 function addRow(user) {
   const row = document.createElement("tr");
-
   row.innerHTML = `
     <td>${user.name}</td>
     <td>${user.email}</td>
@@ -45,9 +42,9 @@ form.addEventListener("submit", function (e) {
   const acceptedTerms = document.getElementById("acceptTerms").checked;
 
   const age = calculateAge(dob);
-  if (age < minAge || age > maxAge) {
-    alert("Age must be between 18 and 55.");
-    return; // 🚫 block form submission
+  if (age < 18 || age > 55) {
+    alert("Age must be between 18 and 55 years.");
+    return;
   }
 
   const user = { name, email, password, dob, acceptedTerms };
@@ -59,19 +56,19 @@ form.addEventListener("submit", function (e) {
 });
 
 window.onload = () => {
+  const users = getUsers();
+  users.forEach(user => addRow(user));
+
+  // Set min and max DOB range
   const dobInput = document.getElementById("dob");
   const today = new Date();
-
-  const maxDob = new Date(today.getFullYear() - minAge, today.getMonth(), today.getDate());
-  const minDob = new Date(today.getFullYear() - maxAge, today.getMonth(), today.getDate());
+  const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  const minDob = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
 
   function formatDate(date) {
     return date.toISOString().split("T")[0];
   }
 
-  dobInput.setAttribute("min", formatDate(minDob));
   dobInput.setAttribute("max", formatDate(maxDob));
-
-  const users = getUsers();
-  users.forEach(user => addRow(user));
+  dobInput.setAttribute("min", formatDate(minDob));
 };
