@@ -59,16 +59,17 @@ window.onload = () => {
   const users = getUsers();
   users.forEach(user => addRow(user));
 
-  // Set min and max DOB range
+  // Set min and max DOB for age between 18 and 55
   const dobInput = document.getElementById("dob");
   const today = new Date();
-  const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-  const minDob = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
+
+  const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  const minDate = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
 
   function formatDate(date) {
     return date.toISOString().split("T")[0];
   }
 
-  dobInput.setAttribute("max", formatDate(maxDob));
-  dobInput.setAttribute("min", formatDate(minDob));
+  dobInput.setAttribute("max", formatDate(maxDate));
+  dobInput.setAttribute("min", formatDate(minDate));
 };
